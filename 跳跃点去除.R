@@ -1,0 +1,12 @@
+#install.packages("prospectr")
+#library(prospectr)
+base_path <- "C:/Users/Administrator/Desktop/普朗数据整理/勘查线00/钻孔0017"
+file <- paste(base_path,"temp02.xlsx",sep="/")
+data <-readxl::read_xlsx(file,1,col_names = F)
+sizes = length(data)
+wavl = as.vector(unlist(data[,1]))
+arr <- array(c(1:2151*(sizes-1)),dim=c(2151,sizes-1))
+for(i in 2:sizes) 
+  arr[,i-1] <- spliceCorrection(as.vector(unlist(data[,i])),wavl,splice = c(1000,1800))
+save_path <- paste(base_path,"temp03.csv",sep="/")
+write.csv(arr,file=save_path,row.names = FALSE)
